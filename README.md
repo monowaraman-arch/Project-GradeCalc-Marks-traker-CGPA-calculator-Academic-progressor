@@ -1,4 +1,6 @@
 # GradeCalc
+ 
+**Grade Smarter - Track Marks, Calculate CGPA, and Manage Academic Progress**
 
 GradeCalc is a student grade calculator web application built with Next.js. It helps students manage courses, enter marks, calculate grades, track current semester CGPA, estimate all-time CGPA, and export academic reports.
 

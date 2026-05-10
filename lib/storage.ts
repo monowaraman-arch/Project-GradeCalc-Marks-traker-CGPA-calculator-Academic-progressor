@@ -72,11 +72,11 @@ export function createSampleCourse(): Course {
   const now = Date.now()
   return {
     id: generateId(),
-    code: "CSE 501",
-    title: "Database Systems",
+    code: "CSE311",
+    title: "Database Management System",
     credit: 3,
-    facultyName: "Dr. Smith",
-    semester: "Fall 2024",
+    facultyName: "TnS1",
+    semester: "Spring 2026",
     calculationMode: "marks",
     demoLetterGrade: null,
     demoGradePoint: null,

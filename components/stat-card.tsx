@@ -13,7 +13,7 @@ interface StatCardProps {
 export function StatCard({ title, value, subtitle, icon: Icon, variant = "default" }: StatCardProps) {
   return (
     <Card className={cn(
-      "relative overflow-hidden",
+      "motion-card relative overflow-hidden",
       variant === "primary" && "border-primary/20 bg-primary/5",
       variant === "accent" && "border-accent/20 bg-accent/5",
       variant === "muted" && "border-muted bg-muted/50"

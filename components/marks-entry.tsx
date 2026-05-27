@@ -99,7 +99,7 @@ export function MarksEntry({
   }
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="motion-card overflow-hidden">
       <CardHeader className="pb-3">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0 flex-1 space-y-1">
@@ -167,7 +167,7 @@ export function MarksEntry({
         )}
         
         {/* Items list */}
-        <div className="space-y-2">
+        <div className="motion-stagger-left space-y-2">
           {component.items.map((item) => {
             const status = getItemStatus(item)
             const percentage = item.totalMarks > 0 && item.obtainedMarks !== null

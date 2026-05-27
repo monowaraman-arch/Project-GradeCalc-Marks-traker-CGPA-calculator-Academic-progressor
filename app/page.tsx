@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { StatCard } from "@/components/stat-card"
 import { CoursesTable } from "@/components/courses-table"
 import { CourseForm } from "@/components/course-form"
+import { ConfirmDialog } from "@/components/confirm-dialog"
 import { useApp } from "@/components/app-provider"
 import {
   calculateCGPA,
@@ -19,8 +20,9 @@ import {
 import type { Course } from "@/lib/types"
 
 export default function Dashboard() {
-  const { data, isLoading, addCourse, updateCGPASettings } = useApp()
+  const { data, isLoading, addCourse, deleteCourse, updateCGPASettings } = useApp()
   const [showCourseForm, setShowCourseForm] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null)
   const [prevCGPA, setPrevCGPA] = useState("")
   const [prevCredits, setPrevCredits] = useState("")
 
@@ -48,6 +50,13 @@ export default function Dashboard() {
     addCourse(course)
   }
 
+  const handleDeleteCourse = () => {
+    if (deleteTarget) {
+      deleteCourse(deleteTarget)
+      setDeleteTarget(null)
+    }
+  }
+
   const handleUpdateCGPASettings = () => {
     updateCGPASettings({
       previousCGPA: prevCGPA ? parseFloat(prevCGPA) : null,
@@ -55,9 +64,11 @@ export default function Dashboard() {
     })
   }
 
+  const deleteCourseCode = data.courses.find((course) => course.id === deleteTarget)?.code
+
   return (
-    <div className="container mx-auto space-y-6 px-4 py-6 sm:space-y-8 sm:py-8">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="app-container space-y-6 py-6 sm:space-y-8 sm:py-8">
+      <div className="motion-section flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Dashboard</h1>
           <p className="text-sm text-muted-foreground sm:text-base">Track your academic performance</p>
@@ -69,7 +80,7 @@ export default function Dashboard() {
       </div>
 
       {coursesNotIncluded.length > 0 && (
-        <div className="flex items-start gap-3 rounded-lg border border-warning bg-warning/10 p-3 sm:p-4">
+        <div className="motion-section motion-delay-1 flex items-start gap-3 rounded-lg border border-warning bg-warning/10 p-3 sm:p-4">
           <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5 text-warning-foreground" />
           <div className="space-y-1">
             <p className="font-medium text-warning-foreground text-sm sm:text-base">Attention needed</p>
@@ -82,7 +93,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      <div className="motion-stagger grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         <StatCard
           title="Total Courses"
           value={data.courses.length}
@@ -113,14 +124,14 @@ export default function Dashboard() {
         />
       </div>
 
-      <Card>
+      <Card className="motion-section motion-delay-2">
         <CardHeader className="pb-2 sm:pb-4">
           <CardTitle className="text-base sm:text-lg">CGPA Settings</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
-            <div className="grid grid-cols-2 gap-3 sm:flex sm:gap-4">
-              <div className="space-y-1.5 sm:space-y-2">
+          <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
+            <div className="grid min-w-0 grid-cols-1 gap-3 sm:flex sm:gap-4">
+              <div className="min-w-0 space-y-1.5 sm:space-y-2">
                 <Label htmlFor="prevCGPA" className="text-xs sm:text-sm">Previous CGPA</Label>
                 <Input
                   id="prevCGPA"
@@ -134,7 +145,7 @@ export default function Dashboard() {
                   className="h-9 sm:w-32"
                 />
               </div>
-              <div className="space-y-1.5 sm:space-y-2">
+              <div className="min-w-0 space-y-1.5 sm:space-y-2">
                 <Label htmlFor="prevCredits" className="text-xs sm:text-sm">Previous Completed Credits</Label>
                 <Input
                   id="prevCredits"
@@ -175,9 +186,13 @@ export default function Dashboard() {
         </CardContent>
       </Card>
 
-      <div className="space-y-3 sm:space-y-4">
+      <div className="motion-section motion-delay-3 space-y-3 sm:space-y-4">
         <h2 className="text-lg font-semibold text-foreground sm:text-xl">Course Summary</h2>
-        <CoursesTable courses={data.courses} gradingSystem={data.gradingSystem} />
+        <CoursesTable
+          courses={data.courses}
+          gradingSystem={data.gradingSystem}
+          onDeleteCourse={setDeleteTarget}
+        />
       </div>
 
       <CourseForm
@@ -185,6 +200,16 @@ export default function Dashboard() {
         onOpenChange={setShowCourseForm}
         onSubmit={handleAddCourse}
         gradingSystem={data.gradingSystem}
+      />
+
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        onConfirm={handleDeleteCourse}
+        title="Delete Course"
+        description={`Are you sure you want to delete ${deleteCourseCode ?? "this course"}? All marks and components will be permanently removed.`}
+        confirmText="Delete"
+        variant="destructive"
       />
     </div>
   )

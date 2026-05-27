@@ -1,7 +1,7 @@
 "use client"
 
 import { useApp } from "@/components/app-provider"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
@@ -10,9 +10,8 @@ import {
   calculateCurrentSemesterCGPA,
   calculateCGPA,
   calculateCurrentSemesterCredits,
-  calculateCurrentSemesterWeightedPoints,
 } from "@/lib/calculations"
-import { Printer, Download, FileText, AlertCircle, CheckCircle2 } from "lucide-react"
+import { Printer, Download, AlertCircle, CheckCircle2 } from "lucide-react"
 import { useRef } from "react"
 
 export default function ReportPage() {
@@ -21,7 +20,7 @@ export default function ReportPage() {
 
   if (isLoading || !data) {
     return (
-      <div className="container mx-auto flex min-h-[50vh] items-center justify-center px-4 py-8">
+      <div className="app-container flex min-h-[50vh] items-center justify-center py-8">
         <p className="text-muted-foreground">Loading...</p>
       </div>
     )
@@ -37,7 +36,6 @@ export default function ReportPage() {
   const allTimeCGPA = calculateCGPA(courses, gradingSystem, cgpaSettings)
   const totalCredits = courses.reduce((sum, c) => sum + c.credit, 0)
   const countedCredits = calculateCurrentSemesterCredits(courses, gradingSystem)
-  const totalWeightedPoints = calculateCurrentSemesterWeightedPoints(courses, gradingSystem)
   const coursesNotIncluded = courseResults.filter(cr => !cr.result.isValidForCGPA)
   const hasIncomplete = coursesNotIncluded.length > 0
 
@@ -50,22 +48,18 @@ export default function ReportPage() {
       "Course Code",
       "Course Title",
       "Credits",
-      "Calculation Mode",
       "Final Marks / Demo Grade",
       "Letter Grade",
       "Grade Point",
-      "Weighted Grade Point",
       "Included in CGPA"
     ]
     const rows = courseResults.map(cr => [
       cr.course.code,
       cr.course.title,
       cr.course.credit.toString(),
-      cr.result.isDemoGrade ? "Use Demo Grade" : "Calculate from Marks",
       cr.result.isDemoGrade ? "Manual Demo Grade" : `${cr.result.percentage.toFixed(2)}%`,
       cr.result.letterGrade,
       cr.result.gradePoint.toFixed(2),
-      cr.result.isValidForCGPA ? cr.result.weightedGradePoint.toFixed(2) : "Not included",
       cr.result.isValidForCGPA ? "Yes" : "No"
     ])
     
@@ -74,7 +68,6 @@ export default function ReportPage() {
       ["Summary"],
       ["Total Credits", totalCredits.toString()],
       ["Credits Counted in CGPA", countedCredits.toString()],
-      ["Current Semester Weighted Grade Points", totalWeightedPoints.toFixed(2)],
       ["Current Semester CGPA", currentSemesterCGPA.toFixed(2)],
       ["All-Time CGPA", allTimeCGPA.toFixed(2)]
     ]
@@ -102,13 +95,11 @@ export default function ReportPage() {
     day: "numeric"
   })
 
-  const semester = courses[0]?.semester || "Current Semester"
-
   return (
-    <div className="container mx-auto px-4 py-6 sm:py-8">
-      <div className="mb-6 flex flex-col gap-4 print:hidden sm:flex-row sm:items-center sm:justify-between">
+    <div className="app-container py-6 sm:py-8">
+      <div className="motion-section mb-6 flex flex-col gap-4 print:hidden sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Result Report</h1>
+          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Semester Grade Report</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             View and export your semester grade summary
           </p>
@@ -128,7 +119,7 @@ export default function ReportPage() {
       </div>
 
       {hasIncomplete && (
-        <Card className="mb-6 border-amber-500/50 bg-amber-500/5 print:hidden">
+        <Card className="motion-section motion-delay-1 mb-6 border-amber-500/50 bg-amber-500/5 print:hidden">
           <CardContent className="flex items-start gap-3 pt-4">
             <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-500" />
             <div>
@@ -144,40 +135,26 @@ export default function ReportPage() {
       )}
 
       <div ref={printRef} className="print:p-0">
-        <Card className="mb-6 print:border-0 print:shadow-none">
-          <CardHeader className="text-center print:pb-2">
-            <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 print:hidden">
-              <FileText className="h-6 w-6 text-primary" />
-            </div>
-            <CardTitle className="text-xl sm:text-2xl print:text-xl">
-              Semester Grade Report
-            </CardTitle>
-            <CardDescription className="print:text-foreground">
-              {semester} | Generated on {currentDate}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 print:grid-cols-4 print:gap-4">
-          <Card className="print:border print:shadow-none">
+        <div className="motion-stagger mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 print:grid-cols-4 print:gap-4">
+          <Card className="motion-card print:border print:shadow-none">
             <CardContent className="p-3 text-center sm:p-4">
               <p className="text-xs text-muted-foreground sm:text-sm">Total Courses</p>
               <p className="mt-1 text-xl font-bold text-foreground sm:text-2xl">{courses.length}</p>
             </CardContent>
           </Card>
-          <Card className="print:border print:shadow-none">
+          <Card className="motion-card print:border print:shadow-none">
             <CardContent className="p-3 text-center sm:p-4">
               <p className="text-xs text-muted-foreground sm:text-sm">Credits Counted</p>
               <p className="mt-1 text-xl font-bold text-foreground sm:text-2xl">{countedCredits}</p>
             </CardContent>
           </Card>
-          <Card className="print:border print:shadow-none">
+          <Card className="motion-card print:border print:shadow-none">
             <CardContent className="p-3 text-center sm:p-4">
               <p className="text-xs text-muted-foreground sm:text-sm">Current Semester CGPA</p>
               <p className="mt-1 text-xl font-bold text-primary sm:text-2xl">{currentSemesterCGPA.toFixed(2)}</p>
             </CardContent>
           </Card>
-          <Card className="print:border print:shadow-none">
+          <Card className="motion-card print:border print:shadow-none">
             <CardContent className="p-3 text-center sm:p-4">
               <p className="text-xs text-muted-foreground sm:text-sm">All-Time CGPA</p>
               <p className="mt-1 text-xl font-bold text-primary sm:text-2xl">{allTimeCGPA.toFixed(2)}</p>
@@ -185,7 +162,7 @@ export default function ReportPage() {
           </Card>
         </div>
 
-        <Card className="print:border print:shadow-none">
+        <Card className="motion-section motion-delay-2 print:border print:shadow-none">
           <CardHeader className="print:pb-2">
             <CardTitle className="text-base sm:text-lg">Course Results</CardTitle>
           </CardHeader>
@@ -203,26 +180,18 @@ export default function ReportPage() {
                         <th className="pb-3 font-medium text-muted-foreground">Course Code</th>
                         <th className="pb-3 font-medium text-muted-foreground">Course Title</th>
                         <th className="pb-3 text-center font-medium text-muted-foreground">Credits</th>
-                        <th className="pb-3 font-medium text-muted-foreground">Calculation Mode</th>
                         <th className="pb-3 text-center font-medium text-muted-foreground">Final Marks / Demo Grade</th>
                         <th className="pb-3 text-center font-medium text-muted-foreground">Letter Grade</th>
                         <th className="pb-3 text-center font-medium text-muted-foreground">Grade Point</th>
-                        <th className="pb-3 text-right font-medium text-muted-foreground">Weighted Grade Point</th>
                         <th className="pb-3 text-center font-medium text-muted-foreground print:hidden">Status</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="motion-stagger-left">
                       {courseResults.map(({ course, result }) => (
                         <tr key={course.id} className="border-b border-border/50 last:border-0">
                           <td className="py-3 font-medium">{course.code}</td>
                           <td className="py-3 text-foreground">{course.title}</td>
                           <td className="py-3 text-center">{course.credit}</td>
-                          <td className="py-3">
-                            <div className="flex flex-wrap items-center gap-1.5">
-                              <span>{result.isDemoGrade ? "Use Demo Grade" : "Calculate from Marks"}</span>
-                              {result.isDemoGrade && <Badge variant="outline">Demo Grade Used</Badge>}
-                            </div>
-                          </td>
                           <td className="py-3 text-center">{result.isDemoGrade ? "Manual Demo Grade" : `${result.percentage.toFixed(1)}%`}</td>
                           <td className="py-3 text-center">
                             <Badge 
@@ -233,7 +202,6 @@ export default function ReportPage() {
                             </Badge>
                           </td>
                           <td className="py-3 text-center font-mono">{result.gradePoint.toFixed(2)}</td>
-                          <td className="py-3 text-right font-mono">{result.isValidForCGPA ? result.weightedGradePoint.toFixed(2) : "Not included"}</td>
                           <td className="py-3 text-center print:hidden">
                             {result.isValidForCGPA ? (
                               <CheckCircle2 className="mx-auto h-4 w-4 text-green-500" />
@@ -244,22 +212,10 @@ export default function ReportPage() {
                         </tr>
                       ))}
                     </tbody>
-                    <tfoot>
-                      <tr className="border-t-2 border-border font-medium">
-                        <td className="pt-3" colSpan={2}>Total Counted</td>
-                        <td className="pt-3 text-center">{countedCredits}</td>
-                        <td className="pt-3">-</td>
-                        <td className="pt-3 text-center">-</td>
-                        <td className="pt-3 text-center">-</td>
-                        <td className="pt-3 text-center">-</td>
-                        <td className="pt-3 text-right font-mono">{totalWeightedPoints.toFixed(2)}</td>
-                        <td className="print:hidden"></td>
-                      </tr>
-                    </tfoot>
                   </table>
                 </div>
 
-                <div className="space-y-3 sm:hidden print:hidden">
+                <div className="motion-stagger-left space-y-3 sm:hidden print:hidden">
                   {courseResults.map(({ course, result }) => (
                     <div key={course.id} className="rounded-lg border border-border p-3">
                       <div className="flex items-start justify-between gap-2">
@@ -277,20 +233,12 @@ export default function ReportPage() {
                       <Separator className="my-2" />
                       <div className="grid grid-cols-2 gap-2 text-center text-xs">
                         <div>
-                          <p className="text-muted-foreground">Mode</p>
-                          <p className="font-medium">{result.isDemoGrade ? "Use Demo Grade" : "Calculate from Marks"}</p>
-                        </div>
-                        <div>
                           <p className="text-muted-foreground">Final</p>
                           <p className="font-medium">{result.isDemoGrade ? "Manual Demo Grade" : `${result.percentage.toFixed(1)}%`}</p>
                         </div>
                         <div>
                           <p className="text-muted-foreground">Grade Point</p>
                           <p className="font-mono font-medium">{result.gradePoint.toFixed(2)}</p>
-                        </div>
-                        <div>
-                          <p className="text-muted-foreground">Weighted Grade Point</p>
-                          <p className="font-mono font-medium">{result.isValidForCGPA ? result.weightedGradePoint.toFixed(2) : "Not included"}</p>
                         </div>
                       </div>
                       {result.isDemoGrade && <Badge variant="outline" className="mt-2">Demo Grade Used</Badge>}
@@ -305,14 +253,10 @@ export default function ReportPage() {
 
                   <div className="rounded-lg border-2 border-primary/20 bg-primary/5 p-3">
                     <p className="mb-2 text-center text-sm font-medium text-foreground">Summary</p>
-                    <div className="grid grid-cols-2 gap-3 text-center">
+                    <div className="text-center">
                       <div>
                         <p className="text-xs text-muted-foreground">Credits Counted</p>
                         <p className="font-bold">{countedCredits}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Weighted Points</p>
-                        <p className="font-mono font-bold">{totalWeightedPoints.toFixed(2)}</p>
                       </div>
                     </div>
                   </div>
@@ -323,7 +267,7 @@ export default function ReportPage() {
         </Card>
 
         {cgpaSettings.previousCGPA !== null && cgpaSettings.previousCredits !== null && (
-          <Card className="mt-6 print:border print:shadow-none">
+          <Card className="motion-section motion-delay-3 mt-6 print:border print:shadow-none">
             <CardHeader className="print:pb-2">
               <CardTitle className="text-base sm:text-lg">All-Time CGPA Breakdown</CardTitle>
             </CardHeader>

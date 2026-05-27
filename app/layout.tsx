@@ -1,12 +1,19 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Allison, Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { AppProvider } from '@/components/app-provider'
 import { Header } from '@/components/header'
+import { PageTransition } from '@/components/page-transition'
+import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const allison = Allison({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-allison",
+});
 
 export const metadata: Metadata = {
   title: 'GradeCalc - Student Grade Calculator',
@@ -46,14 +53,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="bg-background">
-      <body className="font-sans antialiased min-h-screen bg-background">
-        <AppProvider>
-          <Header />
-          <main className="pb-8">
-            {children}
-          </main>
-        </AppProvider>
+    <html lang="en" className="bg-background" suppressHydrationWarning>
+      <body className={`${allison.variable} font-sans antialiased min-h-screen bg-background`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <AppProvider>
+            <Header />
+            <main className="pb-8">
+              <PageTransition>{children}</PageTransition>
+            </main>
+          </AppProvider>
+        </ThemeProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

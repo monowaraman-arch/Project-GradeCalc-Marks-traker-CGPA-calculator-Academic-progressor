@@ -2,8 +2,7 @@
 
 import { useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import Link from "next/link"
-import { ArrowLeft, Plus, Pencil, Trash2, AlertCircle, AlertTriangle, Info } from "lucide-react"
+import { Plus, Pencil, Trash2, AlertCircle, AlertTriangle, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -58,15 +57,12 @@ export default function CourseDetailPage() {
 
   if (!course) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="app-container py-8">
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
           <h3 className="text-lg font-semibold text-foreground">Course not found</h3>
           <p className="mt-2 text-sm text-muted-foreground">
             The course you are looking for does not exist.
           </p>
-          <Button asChild className="mt-4">
-            <Link href="/courses">Back to Courses</Link>
-          </Button>
         </div>
       </div>
     )
@@ -129,26 +125,23 @@ export default function CourseDetailPage() {
   }
 
   return (
-    <div className="container mx-auto space-y-6 px-4 py-6 sm:space-y-8 sm:py-8">
-      <div className="flex flex-col gap-4">
-        <Button asChild variant="ghost" className="w-fit -ml-2">
-          <Link href="/courses">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Courses
-          </Link>
-        </Button>
-        
+    <div className="app-container space-y-6 py-6 sm:space-y-8 sm:py-8">
+      <div className="motion-section flex flex-col gap-4">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="space-y-1">
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-              <p className="text-sm font-medium text-primary">{course.code}</p>
-              <Badge className={cn(getGradeColor(result.letterGrade))}>
+          <div className="max-w-4xl space-y-3">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+              <p className="text-2xl font-bold tracking-tight text-primary sm:text-3xl">{course.code}</p>
+              <Badge className={cn("px-3 py-1 text-base sm:text-lg", getGradeColor(result.letterGrade))}>
                 {result.letterGrade}
               </Badge>
-              {result.isDemoGrade && <Badge variant="outline">Demo Grade Used</Badge>}
+              {result.isDemoGrade && (
+                <Badge variant="outline" className="px-3 py-1 text-base sm:text-lg">
+                  Demo Grade Used
+                </Badge>
+              )}
             </div>
-            <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">{course.title}</h1>
-            <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground sm:text-sm">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">{course.title}</h1>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-base text-muted-foreground sm:text-xl">
               <span>{course.credit} credits</span>
               {course.semester && <span>| {course.semester}</span>}
               {course.facultyName && <span>| {course.facultyName}</span>}
@@ -167,7 +160,7 @@ export default function CourseDetailPage() {
         </div>
       </div>
 
-      <Card>
+      <Card className="motion-section motion-delay-1">
         <CardHeader className="pb-2 sm:pb-4">
           <CardTitle className="text-base sm:text-lg">Course Result</CardTitle>
         </CardHeader>
@@ -200,7 +193,7 @@ export default function CourseDetailPage() {
       </Card>
 
       {result.statusMessage && (
-        <div className="flex items-start gap-3 rounded-lg border border-warning bg-warning/10 p-3 sm:p-4">
+        <div className="motion-section motion-delay-1 flex items-start gap-3 rounded-lg border border-warning bg-warning/10 p-3 sm:p-4">
           <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5 text-warning-foreground" />
           <div>
             <p className="font-medium text-warning-foreground text-sm sm:text-base">Not included in CGPA yet</p>
@@ -210,7 +203,7 @@ export default function CourseDetailPage() {
       )}
 
       {result.isDemoGrade && (
-        <div className="flex items-start gap-3 rounded-lg border border-primary/20 bg-primary/5 p-3 sm:p-4">
+        <div className="motion-section motion-delay-1 flex items-start gap-3 rounded-lg border border-primary/20 bg-primary/5 p-3 sm:p-4">
           <Info className="h-5 w-5 flex-shrink-0 mt-0.5 text-primary" />
           <div>
             <p className="font-medium text-foreground text-sm sm:text-base">Demo grade mode is active</p>
@@ -222,7 +215,7 @@ export default function CourseDetailPage() {
       )}
 
       {!result.isDemoGrade && !weightValidation.isValid && (
-        <div className="flex items-start gap-3 rounded-lg border border-destructive bg-destructive/10 p-3 sm:p-4">
+        <div className="motion-section motion-delay-1 flex items-start gap-3 rounded-lg border border-destructive bg-destructive/10 p-3 sm:p-4">
           <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5 text-destructive" />
           <div>
             <p className="font-medium text-destructive text-sm sm:text-base">Component weights do not add up to 100%</p>
@@ -234,7 +227,7 @@ export default function CourseDetailPage() {
       )}
 
       {!result.isDemoGrade && !completeness.isComplete && completeness.missingMarksCount > 0 && (
-        <div className="flex items-start gap-3 rounded-lg border border-warning bg-warning/10 p-3 sm:p-4">
+        <div className="motion-section motion-delay-1 flex items-start gap-3 rounded-lg border border-warning bg-warning/10 p-3 sm:p-4">
           <AlertTriangle className="h-5 w-5 flex-shrink-0 mt-0.5 text-warning-foreground" />
           <div>
             <p className="font-medium text-warning-foreground text-sm sm:text-base">
@@ -251,7 +244,7 @@ export default function CourseDetailPage() {
       )}
 
       {!result.isDemoGrade && completeness.invalidMarksCount > 0 && (
-        <div className="flex items-start gap-3 rounded-lg border border-destructive bg-destructive/10 p-3 sm:p-4">
+        <div className="motion-section motion-delay-1 flex items-start gap-3 rounded-lg border border-destructive bg-destructive/10 p-3 sm:p-4">
           <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5 text-destructive" />
           <div>
             <p className="font-medium text-destructive text-sm sm:text-base">
@@ -264,7 +257,7 @@ export default function CourseDetailPage() {
         </div>
       )}
 
-      <div className="space-y-4">
+      <div className="motion-section motion-delay-2 space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-lg font-semibold text-foreground sm:text-xl">
@@ -292,7 +285,7 @@ export default function CourseDetailPage() {
             </Button>
           </div>
         ) : (
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="motion-stagger-left grid gap-4 lg:grid-cols-2">
             {course.components.map((component) => (
               <MarksEntry
                 key={component.id}
@@ -309,7 +302,7 @@ export default function CourseDetailPage() {
       </div>
 
       {!result.isDemoGrade && course.components.length > 0 && (
-        <Card>
+        <Card className="motion-section motion-delay-3">
           <CardHeader className="pb-2 sm:pb-4">
             <CardTitle className="text-base sm:text-lg">Score Breakdown</CardTitle>
           </CardHeader>
@@ -368,7 +361,7 @@ export default function CourseDetailPage() {
       )}
 
       {course.components.length > 0 && (
-        <Card className="border-muted">
+        <Card className="motion-section motion-delay-3 border-muted">
           <CardContent className="p-3 sm:p-4">
             <div className="flex gap-3">
               <Info className="h-5 w-5 shrink-0 text-muted-foreground" />

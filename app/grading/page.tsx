@@ -110,8 +110,8 @@ export default function GradingPage() {
   }
 
   return (
-    <div className="container mx-auto space-y-6 px-4 py-6 sm:space-y-8 sm:py-8">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="app-container space-y-6 py-6 sm:space-y-8 sm:py-8">
+      <div className="motion-section flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Grading System</h1>
           <p className="text-sm text-muted-foreground sm:text-base">Customize your university grading scale</p>
@@ -123,7 +123,7 @@ export default function GradingPage() {
       </div>
 
       {validation.errors.length > 0 && (
-        <div className="flex items-start gap-3 rounded-lg border border-destructive bg-destructive/10 p-4">
+        <div className="motion-section motion-delay-1 flex items-start gap-3 rounded-lg border border-destructive bg-destructive/10 p-4">
           <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5 text-destructive" />
           <div>
             <p className="font-medium text-destructive">Grade range errors</p>
@@ -137,7 +137,7 @@ export default function GradingPage() {
       )}
 
       {validation.warnings.length > 0 && (
-        <div className="flex items-start gap-3 rounded-lg border border-warning bg-warning/10 p-4">
+        <div className="motion-section motion-delay-1 flex items-start gap-3 rounded-lg border border-warning bg-warning/10 p-4">
           <AlertTriangle className="h-5 w-5 flex-shrink-0 mt-0.5 text-warning-foreground" />
           <div>
             <p className="font-medium text-warning-foreground">Grade range warnings</p>
@@ -150,7 +150,7 @@ export default function GradingPage() {
         </div>
       )}
 
-      <Card>
+      <Card className="motion-section motion-delay-2">
         <CardHeader>
           <CardTitle>Grade Rules</CardTitle>
           <CardDescription>
@@ -170,7 +170,7 @@ export default function GradingPage() {
                   <TableHead className="w-24">Actions</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody className="motion-stagger-left">
                 {sortedRules.map((rule) => (
                   <TableRow key={rule.id}>
                     {editingRule === rule.id ? (
@@ -279,7 +279,7 @@ export default function GradingPage() {
             </Table>
           </div>
 
-          <div className="space-y-3 sm:hidden">
+          <div className="motion-stagger-left space-y-3 sm:hidden">
             {sortedRules.map((rule) => (
               <div
                 key={rule.id}
@@ -399,7 +399,7 @@ export default function GradingPage() {
         </CardContent>
       </Card>
 
-      <Card className="border-muted">
+      <Card className="motion-section motion-delay-3 border-muted">
         <CardContent className="p-4">
           <div className="flex gap-3">
             <Info className="h-5 w-5 shrink-0 text-muted-foreground" />
@@ -416,7 +416,7 @@ export default function GradingPage() {
       </Card>
 
       {showAddForm && (
-        <Card>
+        <Card className="motion-section motion-delay-3">
           <CardHeader>
             <CardTitle>Add New Grade Rule</CardTitle>
           </CardHeader>

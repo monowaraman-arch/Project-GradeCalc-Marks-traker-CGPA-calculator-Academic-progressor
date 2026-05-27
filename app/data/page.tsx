@@ -81,14 +81,14 @@ export default function DataPage() {
   }
 
   return (
-    <div className="container mx-auto space-y-8 px-4 py-8">
-      <div>
+    <div className="app-container space-y-8 py-8">
+      <div className="motion-section">
         <h1 className="text-3xl font-bold tracking-tight text-foreground">Data Management</h1>
         <p className="text-muted-foreground">Export, import, or reset your data</p>
       </div>
 
       {/* Export Section */}
-      <Card>
+      <Card className="motion-section motion-delay-1">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Download className="h-5 w-5" />
@@ -117,7 +117,7 @@ export default function DataPage() {
       </Card>
 
       {/* Import Section */}
-      <Card>
+      <Card className="motion-section motion-delay-2">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Upload className="h-5 w-5" />
@@ -178,7 +178,7 @@ export default function DataPage() {
       </Card>
 
       {/* Reset Section */}
-      <Card className="border-destructive/20">
+      <Card className="motion-section motion-delay-3 border-destructive/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-destructive">
             <RefreshCcw className="h-5 w-5" />

@@ -34,8 +34,8 @@ export default function CoursesPage() {
   }
 
   return (
-    <div className="container mx-auto space-y-8 px-4 py-8">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="app-container space-y-8 py-8">
+      <div className="motion-section flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Courses</h1>
           <p className="text-muted-foreground">Manage your courses and marks</p>
@@ -47,7 +47,7 @@ export default function CoursesPage() {
       </div>
 
       {data.courses.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
+        <div className="motion-section motion-delay-1 flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
           <div className="mx-auto max-w-md space-y-4">
             <h3 className="text-lg font-semibold text-foreground">No courses yet</h3>
             <p className="text-sm text-muted-foreground">
@@ -61,7 +61,7 @@ export default function CoursesPage() {
           </div>
         </div>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="motion-stagger grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {data.courses.map((course) => (
             <CourseCard
               key={course.id}

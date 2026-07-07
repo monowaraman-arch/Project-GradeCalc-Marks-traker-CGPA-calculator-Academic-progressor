@@ -1,99 +1,99 @@
-# GradeCalc
- 
-**Grade Smarter - Track Marks, Calculate CGPA, and Manage Academic Progress**
+# GradeCalc - Student Grade Calculator
 
-GradeCalc is a student grade calculator web application built with Next.js. It helps students manage courses, enter marks, calculate grades, track current semester CGPA, estimate all-time CGPA, and export academic reports.
+GradeCalc is a web-based student grade calculator built to help users manage courses, marks, grades, and CGPA in one place.
+It was made to simplify academic progress tracking without needing spreadsheets or manual calculations.
+Students can use it to calculate course results, current semester CGPA, all-time CGPA, and generate grade reports.
 
-The app stores data in the browser using localStorage, so it can run as a simple frontend website without a separate backend or database.
+## Live Demo
+
+Visit the deployed project here:
+
+https://grade-calc-sigma.vercel.app/
 
 ## Features
 
+- Course management
+- Marks entry and component-based grading
+- Custom grade calculation rules
+- Current semester CGPA calculation
+- All-time CGPA estimation
+- Demo grade mode for expected results
+- Customizable grading system
+- Semester grade report generation
+- CSV report download and print support
+- JSON data backup and restore
+- Responsive desktop and mobile interface
+
+## Screenshots
+
 ### Dashboard
+![Dashboard Screenshot](Screenshots/dashboard%20(2).png)
 
-- Shows total courses, total credits, current semester CGPA, and all-time CGPA.
-- Displays warnings when courses are not ready to be included in CGPA.
-- Allows users to enter previous CGPA and completed credits for all-time CGPA calculation.
-- Shows a summary table of all courses.
+### Courses
+![Courses Screenshot](Screenshots/courses%20(2).png)
 
-### Course Management
+### Course Details
+![Course Details Screenshot](Screenshots/course-details%20(2).png)
 
-- Add, edit, and delete courses.
-- Store course code, title, credit hours, faculty name, and semester.
-- View course details individually.
-- Supports both marks-based calculation and manual demo grade mode.
+### Marks Distribution
+![Marks Distribution Screenshot](Screenshots/marks-distribution.png)
 
-### Marks and Components
-
-- Add custom grading components such as attendance, quizzes, assignments, midterm, and final exam.
-- Set percentage weight for each component.
-- Add multiple mark items under each component.
-- Enter obtained marks and total marks for each item.
-- Detects missing marks, invalid marks, and component weight issues.
-
-### Calculation Rules
-
-Each course component can use a different calculation rule:
-
-- Direct Entry: calculates score from total obtained marks and total possible marks.
-- Sum: sums all item marks and divides by total possible marks.
-- Average: averages individual item percentages.
-- Best N of M: counts only the best selected number of scores.
-- Drop Lowest: removes the lowest score before calculating the average.
-
-### Demo Grade Mode
-
-- Allows users to select an expected letter grade instead of entering full marks.
-- Uses the selected grade point directly for CGPA calculation.
-- Keeps saved marks available if the user later switches back to marks-based calculation.
+### Report
+![Report Screenshot](Screenshots/report%20(2).png)
 
 ### Grading System
-
-- Customize grade rules.
-- Add, edit, and delete letter grades.
-- Configure percentage ranges, descriptions, and grade points.
-- Shows validation messages for overlapping, missing, or unusual grade ranges.
-
-### Report Page
-
-- Generates a semester grade report.
-- Shows course results, grade points, weighted grade points, and CGPA summary.
-- Supports printing the report.
-- Supports downloading the report as a CSV file.
+![Grading System Screenshot](Screenshots/grading.png)
 
 ### Data Management
+![Data Management Screenshot](Screenshots/data-management.png)
 
-- Export all app data as a JSON backup.
-- Import data from a previous JSON backup.
-- Reset the app to default sample data.
-- Clear all courses and start fresh.
-
-### Responsive Interface
-
-- Works on desktop and mobile screens.
-- Includes a desktop navigation bar and mobile slide-out menu.
-- Uses reusable UI components for cards, tables, dialogs, buttons, inputs, and alerts.
-
-## Tech Stack
+## Technologies Used
 
 - Next.js
 - React
 - TypeScript
 - Tailwind CSS
-- Radix UI / shadcn-style components
-- Lucide React icons
-- Browser localStorage for persistence
+- Radix UI
+- shadcn-style UI components
+- Lucide React
+- Recharts
+- Next Themes
+- Vercel
+- localStorage
+- HTML
+- CSS
+- JavaScript
+- npm
 
-## Project Structure
+## Folder Structure
 
-```text
-app/                  Application routes and pages
-components/           Reusable UI and feature components
-components/ui/        Shared UI primitives
-hooks/                App state and custom hooks
-lib/                  Types, storage, calculations, and utilities
-public/               Static assets and icons
-styles/               Additional global styles
-```
+- `app/` - Application routes, pages, layout, and global styles.
+- `components/` - Reusable feature components used across the app.
+- `components/ui/` - Shared UI components such as buttons, cards, dialogs, inputs, and tables.
+- `hooks/` - Custom React hooks for app data, mobile detection, and toast handling.
+- `lib/` - Type definitions, grade calculations, localStorage logic, and utility functions.
+- `public/` - Static assets such as icons.
+- `Screenshots/` - Project UI screenshots used in the README.
+
+## Usage
+
+1. Open the live website or run the project locally.
+2. Go to the Courses page and add your course information.
+3. Add grading components such as attendance, quizzes, assignments, midterm, and final exam.
+4. Enter obtained marks and total marks for each component item.
+5. Customize the grading system if your institution uses different grade rules.
+6. Check the Dashboard to view total courses, credits, current semester CGPA, and all-time CGPA.
+7. Use Demo Grade mode when you want to estimate results without entering full marks.
+8. Open the Report page to view, print, or download your semester grade report.
+9. Use the Data page to export a backup, import previous data, reset sample data, or clear courses.
+
+## API Endpoints
+
+This project does not use a backend API. It is a frontend-only web application, and all course, marks, grading, and report data is stored in the browser using `localStorage`.
+
+| Method | Endpoint | Description |
+|---|---|---|
+| N/A | N/A | No API endpoints are available in this project. |
 
 ## How to Run the Website Locally
 
@@ -161,6 +161,31 @@ npm run build    # Create a production build
 npm run start    # Start the production server
 npm run lint     # Run linting, if ESLint is installed/configured
 ```
+
+## Project Status
+
+Completed.
+
+## Future Improvements
+
+- User accounts and cloud data sync
+- Advanced grade analytics dashboard
+- PDF report download
+- Multiple semester management
+- Course-wise progress charts
+- Mobile app or PWA version
+- Import marks from CSV files
+
+## Acknowledgements
+
+- Next.js Documentation
+- React Documentation
+- TypeScript Documentation
+- Tailwind CSS Documentation
+- Radix UI Documentation
+- shadcn/ui component patterns
+- Lucide React icons
+- Vercel deployment platform
 
 ## Notes
 
